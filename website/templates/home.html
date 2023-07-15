@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% block title %}Notes{% endblock %}
+{% block body %}
+<br>
+
+<br>
+<form action="/" method="POST">
+  <div class="form-floating" style="margin:1%;">
+    <textarea class="form-control" placeholder="Leave a note here" id="floatingTextarea" name="note"></textarea>
+    <label for="floatingTextarea">Add your note here</label><br>
+    <center> <input class="btn btn-primary" type="submit" value="Add Note"> </center>
+  </div>
+</form><br>
+
+<div class="row">
+  <center><h1>Notes</h1></center>
+  {% for note in user.notes %}
+  <div class="card"
+    style="width: 18rem;margin:auto;margin-bottom: 2%; box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px;">
+    <div class="card-body">
+      <div class="f" style="
+      display: flex;
+      justify-content: space-between;">
+        <h6 class="card-subtitle mb-2 text-muted"><samp>{{note.date}}</samp></h6>
+        <button type="button" class="close btn-lg" style="border-radius: 11px; border-color: midnightblue;" 
+        onClick="deleteNote({{note.id}})">
+        <span aria-hidden="true" >&times;</span>
+          </button>
+      </div>
+      <p class="card-text">{{note.data}}</p>
+
+    </ul>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<script>
+  function deleteNote(noteId){
+    fetch('/delete-note',{
+          method: 'POST',
+           body: JSON.stringify({noteId : noteId}),
+          }).then((_res) => {
+            window.location.href = '/';
+          });
+  }
+</script>
+{% endblock %}
